@@ -6,18 +6,34 @@ export class Product {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: true,
+        unique: true
+    })
+    code: string;
+
+    @Column({
+        nullable: false,
+    })
     name: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     description: string;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     price: number;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     quantity: number;
 
-    @Column()
+    @Column({
+        nullable: true
+    })
     image: string;
 }
