@@ -6,9 +6,14 @@ export class Category {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: false,
+        unique: true,
+    })
     name: string;
 
-    @Column()
+    @Column({
+        nullable: false,
+    })
     color: string;
 }
