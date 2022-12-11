@@ -2,7 +2,9 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import { authenticationDTO } from "./authentication.dto";
 import jwt from "jsonwebtoken";
-
+import { userRepositoy } from "../user/user.repository";
+import bcrypt from "bcrypt";
+import { generateAccessToken } from "../jwt/jwt.service";
 class AuthenticationController {
 
     public accessToken = async (
@@ -13,11 +15,19 @@ class AuthenticationController {
 
         const { body }: { body: authenticationDTO } = request;
 
-        const accessToken = await jwt.sign({
-            user: body.email
-        }, process.env.JWT_SECRET,{
-            expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN
+        const user = await userRepositoy.findOne({
+            where: {
+                email: body.email
+            }
         });
+
+        if (!user) throw new Error("Email or password is incorrect.");
+
+        const isCorrectPassoword = await bcrypt.compare(body.password, user.password);
+
+        if (!isCorrectPassoword) throw new Error("Email or password is incorrect.");
+
+        const accessToken = generateAccessToken({user: body.email});
 
         return response.status(200).json(accessToken);
     }

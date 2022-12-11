@@ -23,11 +23,11 @@ export class RegistrationController {
 
         await this.repository.save(body);
 
-        await jwt.sign({
-            user: body.email 
-        }, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN,
-        }
+        jwt.sign({
+                user: body.email 
+            }, process.env.JWT_SECRET, {
+                expiresIn: process.env.JWT_EXPIRES_IN,
+            }
         );
 
         return response.status(201)

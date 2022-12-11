@@ -19,3 +19,5 @@ router.post(
         .trim().escape(),
     authenticationController.accessToken
 );
+
+export default router;
