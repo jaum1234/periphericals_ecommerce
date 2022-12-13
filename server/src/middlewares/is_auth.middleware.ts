@@ -25,5 +25,6 @@ export const isAuth = (
         return response.status(401);
     }
 
+    
     next();
 }

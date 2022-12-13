@@ -1,11 +1,17 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
-import { authenticationDTO } from "./authentication.dto";
-import jwt from "jsonwebtoken";
-import { userRepositoy } from "../user/user.repository";
+import { AuthenticationDTO } from "../dtos/authentication.dto";
 import bcrypt from "bcrypt";
-import { generateAccessToken } from "../jwt/jwt.service";
+import { generateAccessToken } from "../services/jwt";
+import { UserRepository } from "../repositories/user.repository";
+import { logger } from "../services/pino";
 class AuthenticationController {
+
+    public repository: UserRepository;
+
+    public constructor() {
+        this.repository = new UserRepository();
+    }
 
     public accessToken = async (
         request: Request, 
@@ -13,13 +19,9 @@ class AuthenticationController {
         next: NextFunction
     ) => {
 
-        const { body }: { body: authenticationDTO } = request;
+        const { body }: { body: AuthenticationDTO } = request;
 
-        const user = await userRepositoy.findOne({
-            where: {
-                email: body.email
-            }
-        });
+        const user = await this.repository.fetch({email: body.email});
 
         if (!user) throw new Error("Email or password is incorrect.");
 
@@ -29,7 +31,9 @@ class AuthenticationController {
 
         const accessToken = generateAccessToken({user: body.email});
 
-        return response.status(200).json(accessToken);
+        return response.status(200).json({
+            access_token: accessToken
+        });
     }
 }
 

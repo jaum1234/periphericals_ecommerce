@@ -1,8 +1,8 @@
-import { Product } from "./product.entity";
+import { Product } from "../models/product.entity";
 import { NextFunction, Request, Response } from "express";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
-import { ProductDTO } from "./product.dto";
+import { ProductDTO } from "../dtos/product.dto";
 
 export class ProductController {
 

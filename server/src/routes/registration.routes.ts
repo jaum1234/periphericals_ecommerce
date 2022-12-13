@@ -1,5 +1,5 @@
 import { Router } from "express";
-import registrationController from "./registration.controller";
+import registrationController from "../controllers/registration.controller";
 import { body } from "express-validator";
 
 const router = Router();
