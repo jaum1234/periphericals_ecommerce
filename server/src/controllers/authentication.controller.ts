@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
-import { AuthenticationDTO } from "../dtos/authentication.dto";
+import { UserDTO } from "../dtos/authentication.dto";
 import bcrypt from "bcrypt";
 import { generateAccessToken } from "../services/jwt";
 import { UserRepository } from "../repositories/user.repository";
@@ -13,13 +13,13 @@ class AuthenticationController {
         this.repository = new UserRepository();
     }
 
-    public accessToken = async (
+    public authenticate = async (
         request: Request, 
         response: Response,
         next: NextFunction
     ) => {
 
-        const { body }: { body: AuthenticationDTO } = request;
+        const { body }: { body: UserDTO } = request;
 
         const user = await this.repository.fetch({email: body.email});
 

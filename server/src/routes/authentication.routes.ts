@@ -17,7 +17,7 @@ router.post(
         .not().isEmpty()
         //.custom(isValidPassword)
         .trim().escape(),
-    authenticationController.accessToken
+    authenticationController.authenticate
 );
 
 export default router;

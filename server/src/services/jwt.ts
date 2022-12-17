@@ -10,11 +10,17 @@ export const generateAccessToken = (
 
     return jwt.sign(payload, secret, {
         expiresIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
+        audience: process.env.JWT_AUDIENCE,
+        issuer: process.env.JWT_ISSUER,
         ...options
     });
 }
 
 export const isValid = (token: string, options?: VerifyOptions) => {
-    return jwt.verify(token, secret, options);
+    return jwt.verify(token, secret, {
+        issuer: process.env.JWT_ISSUER,
+        audience: process.env.JWT_AUDIENCE,
+        ...options
+    });
 }
 

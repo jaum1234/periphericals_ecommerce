@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { RegistrationDTO } from "../dtos/registration.dto";
 import { UserRepository } from "../repositories/user.repository";
 import { generateAccessToken } from "../services/jwt";
+import bcrypt from "bcrypt";
 
 export class RegistrationController {
 
@@ -23,7 +24,10 @@ export class RegistrationController {
 
         try {
 
-            await this.repository.create(body);
+            await this.repository.create({
+                email: body.email,
+                password: await bcrypt.hash(body.password, 15)
+            });
 
             accessToken = generateAccessToken({user: body.email});
 
