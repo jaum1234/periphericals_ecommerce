@@ -19,10 +19,11 @@ describe("User repository module", () => {
     afterEach(async () => {
         await userRepository.clear();
         await AppDataSource.destroy();
+        jest.clearAllMocks();
     })
 
 
-    test("Should store new user in database", async () => {
+    test("store method - Should store new user in database", async () => {
 
         const userData: UserDTO = {
             email: "mail@domain.com",
@@ -41,13 +42,11 @@ describe("User repository module", () => {
         const hashRounds = 15;
 
         expect(mockBcrypt).toBeCalledWith(userData.password, hashRounds)
-        expect(mockBcrypt).toBeCalledTimes(1);
-
         expect(mockInsert).toHaveBeenCalledTimes(1);
 
     });
 
-    test("Should list all users in database", async () => {
+    test("fetchAll method - Should list all users in database", async () => {
         const user1: UserDTO = {
             email: "user1@domain.com",
             password: "12345678"
@@ -75,11 +74,11 @@ describe("User repository module", () => {
             {id: 1, email: user1.email}, {id: 2, email: user2.email}, {id: 3, email: user3.email}
         ]
        
-        expect(mockFind).toBeCalledTimes(1);
+        expect(mockFind).toBeCalled();
         expect(users).toEqual(expectedResult);
     });
 
-    test("Should fetch one specific user", async () => {
+    test("fetch method - Should fetch one specific user", async () => {
         const user1: UserDTO = {
             email: "user1@domain.com",
             password: "12345678"
@@ -95,11 +94,11 @@ describe("User repository module", () => {
 
         const expectedResult = {id: 1, email: "user1@domain.com"};
 
-        expect(mockFindOne).toBeCalledTimes(1);
+        expect(mockFindOne).toBeCalled();
         expect(user).toEqual(expectedResult);
     });
 
-    test("Should update a user", async () => {
+    test("update method - Should update a user", async () => {
         const user: UserDTO = {
             email: "user@domain.com",
             password: "12345678"
@@ -109,8 +108,28 @@ describe("User repository module", () => {
 
         const mockUpdate = jest.spyOn(AppDataSource.getRepository(User), "update");
 
-        await userRepository.update({email: user.email}, {email: "new-email@domain.com"});
+        const criteria = {email: user.email};
+        const newData = {email: "new-email@domain.com"};
+        await userRepository.update(criteria, newData);
 
-        expect(mockUpdate).toBeCalledTimes(1);
+        expect(mockUpdate).toBeCalledWith(criteria, newData);
+    });
+
+    test("remove method - Should remove a user", async () => {
+        const user: UserDTO = {
+            email: "user@domain.com",
+            password: "12345678"
+        }
+
+        await userRepository.create(user);
+
+        const mockFetch = jest.spyOn(userRepository, "fetch");
+        const mockDelete = jest.spyOn(AppDataSource.getRepository(User), "delete");
+
+        const criteria = {email: user.email}
+        await userRepository.remove(criteria);
+
+        expect(mockFetch).toBeCalledWith(criteria);
+        expect(mockDelete).toBeCalledWith(criteria);
     });
 });
