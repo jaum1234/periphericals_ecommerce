@@ -1,19 +1,12 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import { RegistrationDTO } from "../dtos/registration.dto";
-import { UserRepository } from "../repositories/user.repository";
+import UserRepository from "../repositories/user.repository";
 import { generateAccessToken } from "../services/jwt";
 import bcrypt from "bcrypt";
 import { logger } from "../services/pino";
 
 export class RegistrationController {
-
-    private repository: UserRepository;
-
-    public constructor() {
-        this.repository = new UserRepository();
-    }
-
     public register = async (
         request: Request, 
         response: Response, 
@@ -28,7 +21,7 @@ export class RegistrationController {
                 throw new Error("Wrong password.");
             }
 
-            await this.repository.create({
+            await UserRepository.create({
                 email: body.email,
                 password: body.password
             });

@@ -18,8 +18,6 @@ class AuthenticationController {
 
         const user = await UserRepository.fetch({email: body.email});
 
-        logger.info(user);
-
         if (!user) throw new Error("Email or password is incorrect.");
 
         const isCorrectPassoword = await bcrypt.compare(body.password, user.password);

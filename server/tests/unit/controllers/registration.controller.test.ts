@@ -1,7 +1,7 @@
 import { jest, describe, test, expect, beforeEach, afterEach } from "@jest/globals";
 import RegistrationController from "../../../src/controllers/registration.controller";
 import { RegistrationDTO } from "../../../src/dtos/registration.dto";
-import { UserRepository } from "../../../src/repositories/user.repository";
+import UserRepository from "../../../src/repositories/user.repository";
 import * as jwtService from "../../../src/services/jwt";
 import { AppDataSource } from "../../../src/config/data_sources";
 import { logger } from "../../../src/services/pino";
@@ -9,15 +9,13 @@ import { MockRequest, MockResponse } from "./HttpMock";
 
 describe("Registration Controller module", () => {
 
-    let userRepository: UserRepository;
 
     beforeEach(async () => {
         await AppDataSource.initialize();
-        userRepository = new UserRepository();
     })
 
     afterEach(async () => {
-        await userRepository.clear();
+        await UserRepository.clear();
         await AppDataSource.destroy();
         jest.clearAllMocks();
     })
@@ -37,7 +35,7 @@ describe("Registration Controller module", () => {
 
         const next = jest.fn();
 
-        //const mockCreate = jest.spyOn(userRepository, "create").mockImplementation(async () => {return});
+        const mockCreate = jest.spyOn(UserRepository, "create");
         const mockJwtGenerateAccessToken = jest.spyOn(jwtService, "generateAccessToken")
             .mockImplementation(async (payload: any) => "token");
         const mockResponseStatus = jest.spyOn(mockResponse, "status");
@@ -45,7 +43,7 @@ describe("Registration Controller module", () => {
 
         const response = await RegistrationController.register(mockRequest, mockResponse, next);
 
-        //expect(mockCreate).toBeCalled();
+        expect(mockCreate).toBeCalled();
         expect(mockJwtGenerateAccessToken).toBeCalledWith({user: body.email});
         expect(response).toEqual(mockResponse);
         expect(mockResponseStatus).toBeCalledWith(201);
