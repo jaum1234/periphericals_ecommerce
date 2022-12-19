@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, jest, test } from "@jest/globals";
-import { UserDTO } from "../../../src/dtos/authentication.dto";
+import { UserDTO } from "../../../src/dtos/user.dto";
 import { UserRepository } from "../../../src/repositories/user.repository";
-import { AppDataSource } from "../../../src/data-source";
+import { AppDataSource } from "../../../src/config/data_sources";
 import { User } from "../../../src/models/user.entity";
 import { FindOptionsWhere } from "typeorm";
 import bcrypt from "bcrypt";

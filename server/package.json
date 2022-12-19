@@ -25,6 +25,7 @@
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/better-sqlite3": "^7.6.3",
+    "@types/supertest": "^2.0.12",
     "bcrypt": "^5.1.0",
     "better-sqlite3": "^8.0.1",
     "dotenv": "^16.0.3",
@@ -36,7 +37,7 @@
     "typeorm": "0.3.11"
   },
   "scripts": {
-    "start": "set NODE_ENV=development&& ts-node src/index.ts",
+    "start": "set NODE_ENV=development&& ts-node src/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "set NODE_ENV=test&& jest"
   }

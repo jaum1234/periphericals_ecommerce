@@ -24,12 +24,16 @@ export class RegistrationController {
         let accessToken;
 
         try {
+            if (body.password !== body.password_confirmation) {
+                throw new Error("Wrong password.");
+            }
+
             await this.repository.create({
                 email: body.email,
                 password: body.password
             });
 
-            accessToken = generateAccessToken({user: body.email});
+            accessToken = await generateAccessToken({user: body.email});
 
         } catch (err) {
             next(err);

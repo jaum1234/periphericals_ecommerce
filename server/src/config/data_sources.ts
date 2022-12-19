@@ -21,6 +21,7 @@ const SQLiteDataSource = new DataSource({
     name: "default",
     database: ":memory:",
     synchronize: true,
+    logging: false,
     entities: ["src/models/**/*.entity.ts"]
 });
 

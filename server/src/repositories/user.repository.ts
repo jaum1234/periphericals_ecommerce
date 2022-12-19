@@ -1,8 +1,8 @@
 import { FindOptionsWhere, Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../config/data_sources";
 import { User } from "../models/user.entity";
 import { Repository as IRepository } from "../interfaces/repository.interface";
-import { UserDTO } from "../dtos/authentication.dto";
+import { UserDTO } from "../dtos/user.dto";
 import { UserSerializer } from "../serializers/user.serializer";
 import bcrypt from "bcrypt";
 

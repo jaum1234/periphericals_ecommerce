@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
-import { UserDTO } from "../dtos/authentication.dto";
+import { UserDTO } from "../dtos/user.dto";
 import bcrypt from "bcrypt";
 import { generateAccessToken } from "../services/jwt";
 import { UserRepository } from "../repositories/user.repository";
