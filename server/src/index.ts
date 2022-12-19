@@ -4,7 +4,7 @@ import { AppDataSource } from "./data-source"
 import { logger } from "./services/pino";
 import router from "./routes/index.routes";
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 

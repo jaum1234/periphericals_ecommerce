@@ -4,10 +4,11 @@ import { RegistrationDTO } from "../dtos/registration.dto";
 import { UserRepository } from "../repositories/user.repository";
 import { generateAccessToken } from "../services/jwt";
 import bcrypt from "bcrypt";
+import { logger } from "../services/pino";
 
 export class RegistrationController {
 
-    public repository: UserRepository;
+    private repository: UserRepository;
 
     public constructor() {
         this.repository = new UserRepository();
@@ -23,10 +24,9 @@ export class RegistrationController {
         let accessToken;
 
         try {
-
             await this.repository.create({
                 email: body.email,
-                password: await bcrypt.hash(body.password, 15)
+                password: body.password
             });
 
             accessToken = generateAccessToken({user: body.email});
