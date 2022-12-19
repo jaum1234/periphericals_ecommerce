@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { UserDTO } from "../../../src/dtos/user.dto";
-import { UserRepository } from "../../../src/repositories/user.repository";
+import UserRepository from "../../../src/repositories/user.repository";
 import { AppDataSource } from "../../../src/config/data_sources";
 import { User } from "../../../src/models/user.entity";
 import { FindOptionsWhere } from "typeorm";
@@ -8,22 +8,20 @@ import bcrypt from "bcrypt";
 
 describe("User repository module", () => {
     
-    let userRepository: UserRepository;
     jest.setTimeout(10000);
 
     beforeEach(async () => {
         await AppDataSource.initialize();
-        userRepository = new UserRepository();
     })
 
     afterEach(async () => {
-        await userRepository.clear();
+        await UserRepository.clear();
         await AppDataSource.destroy();
         jest.clearAllMocks();
     })
 
 
-    test("store method - Should store new user in database", async () => {
+    test("create method - Should store new user in database", async () => {
 
         const userData: UserDTO = {
             email: "mail@domain.com",
@@ -31,10 +29,10 @@ describe("User repository module", () => {
         }
 
         const mockInsert = jest.spyOn(AppDataSource.getRepository(User), "insert");
-        const mockFecth = jest.spyOn(userRepository, "fetch");
+        const mockFecth = jest.spyOn(UserRepository, "fetch");
         const mockBcrypt = jest.spyOn(bcrypt, "hash");
 
-        await userRepository.create(userData);
+        await UserRepository.create(userData);
 
         expect(mockFecth).toHaveBeenCalledWith({email: userData.email});
         expect(mockFecth).toHaveBeenCalledTimes(1);
@@ -62,13 +60,13 @@ describe("User repository module", () => {
             password: "12345678"
         }
 
-        await userRepository.create(user1);
-        await userRepository.create(user2);
-        await userRepository.create(user3);
+        await UserRepository.create(user1);
+        await UserRepository.create(user2);
+        await UserRepository.create(user3);
 
         const mockFind = jest.spyOn(AppDataSource.getRepository(User), "find");
 
-        const users: User[] = await userRepository.fetchAll();
+        const users: User[] = await UserRepository.fetchAll();
 
         const expectedResult = [
             {id: 1, email: user1.email}, {id: 2, email: user2.email}, {id: 3, email: user3.email}
@@ -84,13 +82,13 @@ describe("User repository module", () => {
             password: "12345678"
         }
 
-        await userRepository.create(user1);
+        await UserRepository.create(user1);
 
         const mockFindOne = jest.spyOn(AppDataSource.getRepository(User), "findOne");
 
         const criteria: FindOptionsWhere<User> = {email: user1.email};
 
-        const user: User = await userRepository.fetch(criteria);
+        const user: User = await UserRepository.fetch(criteria);
 
         const expectedResult = {id: 1, email: "user1@domain.com"};
 
@@ -104,13 +102,13 @@ describe("User repository module", () => {
             password: "12345678"
         }
 
-        await userRepository.create(user);
+        await UserRepository.create(user);
 
         const mockUpdate = jest.spyOn(AppDataSource.getRepository(User), "update");
 
         const criteria = {email: user.email};
         const newData = {email: "new-email@domain.com"};
-        await userRepository.update(criteria, newData);
+        await UserRepository.update(criteria, newData);
 
         expect(mockUpdate).toBeCalledWith(criteria, newData);
     });
@@ -121,13 +119,13 @@ describe("User repository module", () => {
             password: "12345678"
         }
 
-        await userRepository.create(user);
+        await UserRepository.create(user);
 
-        const mockFetch = jest.spyOn(userRepository, "fetch");
+        const mockFetch = jest.spyOn(UserRepository, "fetch");
         const mockDelete = jest.spyOn(AppDataSource.getRepository(User), "delete");
 
         const criteria = {email: user.email}
-        await userRepository.remove(criteria);
+        await UserRepository.remove(criteria);
 
         expect(mockFetch).toBeCalledWith(criteria);
         expect(mockDelete).toBeCalledWith(criteria);

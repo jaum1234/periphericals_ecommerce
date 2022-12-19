@@ -18,14 +18,12 @@ export class UserRepository implements IRepository<User> {
     public fetchAll = async (options?: FindOptionsWhere<User>): Promise<User[]> => {
         return await this.repository.find({
             where: { ...options },
-            select: UserSerializer.serialize()
         });
     }
 
     public fetch = async (whereOptions: FindOptionsWhere<User>): Promise<User> => {
         return await this.repository.findOne({
             where: { ...whereOptions },
-            select: UserSerializer.serialize()
         })
     }
 
@@ -61,3 +59,5 @@ export class UserRepository implements IRepository<User> {
         await this.repository.clear();
     }
 }
+
+export default new UserRepository();

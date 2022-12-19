@@ -3,15 +3,10 @@ import { NextFunction, Request, Response } from "express";
 import { UserDTO } from "../dtos/user.dto";
 import bcrypt from "bcrypt";
 import { generateAccessToken } from "../services/jwt";
-import { UserRepository } from "../repositories/user.repository";
+import UserRepository from "../repositories/user.repository";
 import { logger } from "../services/pino";
 class AuthenticationController {
 
-    public repository: UserRepository;
-
-    public constructor() {
-        this.repository = new UserRepository();
-    }
 
     public authenticate = async (
         request: Request, 
@@ -21,7 +16,9 @@ class AuthenticationController {
 
         const { body }: { body: UserDTO } = request;
 
-        const user = await this.repository.fetch({email: body.email});
+        const user = await UserRepository.fetch({email: body.email});
+
+        logger.info(user);
 
         if (!user) throw new Error("Email or password is incorrect.");
 
@@ -29,7 +26,7 @@ class AuthenticationController {
 
         if (!isCorrectPassoword) throw new Error("Email or password is incorrect.");
 
-        const accessToken = generateAccessToken({user: body.email});
+        const accessToken = await generateAccessToken({user: body.email});
 
         return response.status(200).json({
             access_token: accessToken
