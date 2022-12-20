@@ -67,13 +67,17 @@ describe("User repository module", () => {
         const mockFind = jest.spyOn(AppDataSource.getRepository(User), "find");
 
         const users: User[] = await UserRepository.fetchAll();
-
-        const expectedResult = [
-            {id: 1, email: user1.email}, {id: 2, email: user2.email}, {id: 3, email: user3.email}
-        ]
        
         expect(mockFind).toBeCalled();
-        expect(users).toEqual(expectedResult);
+        expect(mockFind).toBeCalledTimes(1);
+
+        let i = 1;
+        for (const user of users) {
+            expect(user).toHaveProperty("id", i);
+            expect(user).toHaveProperty("email", `user${i}@domain.com`);
+            expect(user).toHaveProperty("password");
+            i++;
+        }
     });
 
     test("fetch method - Should fetch one specific user", async () => {
@@ -90,10 +94,11 @@ describe("User repository module", () => {
 
         const user: User = await UserRepository.fetch(criteria);
 
-        const expectedResult = {id: 1, email: "user1@domain.com"};
-
         expect(mockFindOne).toBeCalled();
-        expect(user).toEqual(expectedResult);
+        expect(user).toHaveProperty("id", 1);
+        expect(user).toHaveProperty("email", user1.email);
+        expect(user).toHaveProperty("password");
+
     });
 
     test("update method - Should update a user", async () => {

@@ -16,15 +16,22 @@ class AuthenticationController {
 
         const { body }: { body: UserDTO } = request;
 
-        const user = await UserRepository.fetch({email: body.email});
+        let accessToken;
 
-        if (!user) throw new Error("Email or password is incorrect.");
+        try {
+            const user = await UserRepository.fetch({email: body.email});
 
-        const isCorrectPassoword = await bcrypt.compare(body.password, user.password);
-
-        if (!isCorrectPassoword) throw new Error("Email or password is incorrect.");
-
-        const accessToken = await generateAccessToken({user: body.email});
+            if (!user) throw new Error("Email or password is incorrect.");
+    
+            const isCorrectPassoword = await bcrypt.compare(body.password, user.password);
+    
+            if (!isCorrectPassoword) throw new Error("Email or password is incorrect.");
+    
+            accessToken = await generateAccessToken({user: body.email});
+        } catch (err: any) {
+            next(err);
+        }
+        
 
         return response.status(200).json({
             access_token: accessToken
