@@ -46,7 +46,7 @@ describe("# checkJWT module", () => {
 
     test("Should throw error if bearer token is malformed", () => {
         const mockRequest: any = new MockRequest();
-        mockRequest.headers = {"authorization": "Bear token"};
+        mockRequest.headers = {"authorization": "Bear  token"};
 
         const mockResponse: any = new MockResponse();
         const mockNext: any = jest.fn();
