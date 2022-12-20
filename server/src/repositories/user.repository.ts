@@ -6,7 +6,7 @@ import { UserDTO } from "../dtos/user.dto";
 import { UserSerializer } from "../serializers/user.serializer";
 import bcrypt from "bcrypt";
 
-export class UserRepository implements IRepository<User> {
+class UserRepository implements IRepository<User> {
 
     
     public repository: Repository<User>;

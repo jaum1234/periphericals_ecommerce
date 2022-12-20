@@ -2,7 +2,7 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import { RegistrationDTO } from "../dtos/registration.dto";
 import UserRepository from "../repositories/user.repository";
-import { generateAccessToken } from "../services/jwt";
+import { generateAccessToken } from "../services/jwt.service";
 
 
 export class RegistrationController {

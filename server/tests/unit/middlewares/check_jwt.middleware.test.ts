@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, afterAll, afterEach } from "@jest/globals";
 import { checkJWT } from "../../../src/middlewares/check_jwt.middleware";
-import * as jwtService from "../../../src/services/jwt";
+import * as jwtService from "../../../src/services/jwt.service";
 import { logger } from "../../../src/services/pino";
 import { MockRequest, MockResponse } from "../../helpers/http_mocks";
 

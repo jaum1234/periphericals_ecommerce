@@ -1,6 +1,7 @@
 export type ProductDTO = {
+    code: string;
     name: string;
-    descripion: string;
+    description: string;
     price: number;
     quantity: number;
     image?: string;

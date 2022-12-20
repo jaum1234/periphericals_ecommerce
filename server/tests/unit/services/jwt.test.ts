@@ -1,5 +1,5 @@
 import { test, describe, jest, expect, afterEach } from "@jest/globals";
-import * as jwtService from "../../../src/services/jwt";
+import * as jwtService from "../../../src/services/jwt.service";
 import jwt from "jsonwebtoken";
 import fs from "fs/promises";
 

@@ -7,7 +7,7 @@ export class Product {
     id: number;
 
     @Column({
-        nullable: true,
+        nullable: false,
         unique: true
     })
     code: string;

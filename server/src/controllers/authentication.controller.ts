@@ -2,7 +2,7 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import { UserDTO } from "../dtos/user.dto";
 import bcrypt from "bcrypt";
-import { generateAccessToken } from "../services/jwt";
+import { generateAccessToken } from "../services/jwt.service";
 import UserRepository from "../repositories/user.repository";
 import { logger } from "../services/pino";
 class AuthenticationController {

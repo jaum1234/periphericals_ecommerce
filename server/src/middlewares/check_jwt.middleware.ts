@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { isValid } from "../services/jwt";
+import { isValid } from "../services/jwt.service";
 import { logger } from "../services/pino";
 
 export const checkJWT = (request: Request, response: Response, next: NextFunction) => {

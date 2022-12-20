@@ -2,7 +2,7 @@ import { jest, describe, test, expect, beforeEach, afterEach } from "@jest/globa
 import RegistrationController from "../../../src/controllers/registration.controller";
 import { RegistrationDTO } from "../../../src/dtos/registration.dto";
 import UserRepository from "../../../src/repositories/user.repository";
-import * as jwtService from "../../../src/services/jwt";
+import * as jwtService from "../../../src/services/jwt.service";
 import { AppDataSource } from "../../../src/config/data_sources";
 import { logger } from "../../../src/services/pino";
 import { MockRequest, MockResponse } from "../../helpers/http_mocks";
