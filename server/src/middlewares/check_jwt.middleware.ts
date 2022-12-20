@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { isValid } from "../services/jwt";
+import { logger } from "../services/pino";
 
 export const checkJWT = (request: Request, response: Response, next: NextFunction) => {
 
@@ -13,14 +14,14 @@ export const checkJWT = (request: Request, response: Response, next: NextFunctio
         }
     
         if (!bearerToken.includes("Bearer ")) {
-            throw new Error("Invalid json web token.");
+            throw new Error("Bearer token is malformed.");
         }
 
         const token = bearerToken.split(" ")[1];
 
         isValid(token);
 
-    } catch (err: any) {
+    } catch (err) {
         next(err);
         return;
     }
