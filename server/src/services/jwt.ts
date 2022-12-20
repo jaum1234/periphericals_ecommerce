@@ -11,8 +11,8 @@ export const generateAccessToken = async (
     return jwt.sign(payload, privateKey, {
         algorithm: "RS256",
         expiresIn: "1h",
-        audience: process.env.JWT_AUDIENCE,
-        issuer: process.env.JWT_ISSUER,
+        audience: process.env.JWT_AUDIENCE as string,
+        issuer: process.env.JWT_ISSUER as string,
         ...options
     });
 }

@@ -22,19 +22,58 @@ describe("JWT module", () => {
 
     });
 
-    test("isValid function - Should validate JWT", async () => {
+    describe("isValid function", () => {
 
-        const payload = {id: 1};
-        const options = {issuer: "issuer", audience: "audience", expiresIn: "1h"};
-        const token = await jwtService.generateAccessToken(payload, options);
+        test("Should successfully validate JWT", async () => {
+            const payload = {id: 1};
+            const options = {issuer: "issuer", audience: "audience", expiresIn: "1h"};
+            const token = await jwtService.generateAccessToken(payload, options);
+    
+            const mockJwtVerify = jest.spyOn(jwt, "verify");
+            const mockFsReadFile = jest.spyOn(fs, "readFile");
+    
+            await expect(jwtService.isValid(token)).resolves.not.toThrowError();
+            expect(mockFsReadFile).toHaveBeenCalledWith("public.key");
+            expect(mockJwtVerify).toHaveBeenCalled();
+        });
 
-        const mockJwtVerify = jest.spyOn(jwt, "verify");
-        const mockFsReadFile = jest.spyOn(fs, "readFile");
+        test("Should throw error because of malformed token", async () => {
+            
+            const mockJwtVerify = jest.spyOn(jwt, "verify");
+            const mockFsReadFile = jest.spyOn(fs, "readFile");
+            
+            await expect(jwtService.isValid("random_string")).rejects.toThrowError();
+            expect(mockFsReadFile).toHaveBeenCalledWith("public.key");
+            expect(mockJwtVerify).toHaveBeenCalled();
+        })
 
-        await jwtService.isValid(token);
+        test("Should throw error because of invalid issuer", async () => {
+            const payload = {id: 1};
+            const options = {issuer: "wrong_issuer", audience: "audience", expiresIn: "1h"};
+            const token = await jwtService.generateAccessToken(payload, options);
+    
+            const mockJwtVerify = jest.spyOn(jwt, "verify");
+            const mockFsReadFile = jest.spyOn(fs, "readFile");
+    
+            await expect(jwtService.isValid(token, {issuer: "issuer", audience: "audience"})).rejects.toThrowError();
+            expect(mockFsReadFile).toHaveBeenCalledWith("public.key");
+            expect(mockJwtVerify).toHaveBeenCalled();
+        });
 
-        expect(mockFsReadFile).toBeCalledWith("public.key");
-        expect(mockJwtVerify).toBeCalled();
+        test("Should throw error because of invalid audience", async () => {
+            const payload = {id: 1};
+            const options = {issuer: "issuer", audience: "wrong_audience", expiresIn: "1h"};
+            const token = await jwtService.generateAccessToken(payload, options);
+    
+            const mockJwtVerify = jest.spyOn(jwt, "verify");
+            const mockFsReadFile = jest.spyOn(fs, "readFile");
+    
+            await expect(jwtService.isValid(token, {issuer: "issuer", audience: "audience"})).rejects.toThrowError();
+            expect(mockFsReadFile).toHaveBeenCalledWith("public.key");
+            expect(mockJwtVerify).toHaveBeenCalled();
+        });
     })
+
+
     
 });
