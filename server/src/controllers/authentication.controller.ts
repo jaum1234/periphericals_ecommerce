@@ -30,6 +30,7 @@ class AuthenticationController {
             accessToken = await generateAccessToken({user: body.email});
         } catch (err: any) {
             next(err);
+            return;
         }
         
 

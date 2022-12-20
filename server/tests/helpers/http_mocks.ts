@@ -1,5 +1,6 @@
 export class MockRequest {
-    public body: any
+    public body: object
+    public headers: object
 }
 
 export class MockResponse {

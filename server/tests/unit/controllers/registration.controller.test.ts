@@ -5,7 +5,7 @@ import UserRepository from "../../../src/repositories/user.repository";
 import * as jwtService from "../../../src/services/jwt";
 import { AppDataSource } from "../../../src/config/data_sources";
 import { logger } from "../../../src/services/pino";
-import { MockRequest, MockResponse } from "./HttpMock";
+import { MockRequest, MockResponse } from "../../helpers/http_mocks";
 
 describe("Registration Controller module", () => {
 
