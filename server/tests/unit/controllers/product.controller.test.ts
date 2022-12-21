@@ -37,11 +37,13 @@ describe("# ProductController module", () => {
 
             const mockProductRepositoryCreate = jest.spyOn(ProductRepository, "create");
             const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseEnd = jest.spyOn(mockResponse, "end");
 
             await ProductController.create(mockRequest, mockResponse, mockNextFunction);
 
             expect(mockProductRepositoryCreate).toBeCalledWith(mockBody)
             expect(mockResponseStatus).toBeCalledWith(201);
+            expect(mockResponseEnd).toBeCalled();
             expect(mockNextFunction).not.toBeCalled();
         });
     });

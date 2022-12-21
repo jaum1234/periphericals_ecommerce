@@ -6,4 +6,5 @@ export class MockRequest {
 export class MockResponse {
     public status = (code: any) => this;
     public json = (data: any) => this;
+    public end = () => this;
 }
