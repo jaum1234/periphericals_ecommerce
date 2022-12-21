@@ -22,6 +22,25 @@ class ProductController {
         return response.status(201).end();
     }
 
+    public list = async (request: Request, response: Response, next: NextFunction) => {
+        const { params } = request;
+
+        const search = params.q;
+
+        let products;
+
+        if (!search) {
+            products = await ProductRepository.fetchAll();
+            return response.status(200).json(products);
+        }
+
+        products = await ProductRepository.fetchAll({
+            name: search
+        });
+
+        return response.status(200).json(products);
+    }
+
 
 }
 
