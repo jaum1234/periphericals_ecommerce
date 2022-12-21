@@ -33,4 +33,6 @@ router.post(
         .trim().escape(),
     ProductController.create);
 
+router.get("", ProductController.list);
+
 export default router;

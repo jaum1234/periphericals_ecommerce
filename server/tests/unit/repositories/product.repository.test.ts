@@ -34,7 +34,7 @@ describe("# ProductRepository module", () => {
 
             const mockProductRepositoryInsert = jest.spyOn(typeOrmRepository, "insert");
 
-            await ProductRepository.create(data);
+            await expect(ProductRepository.create(data)).resolves.not.toThrowError();
 
             expect(mockProductRepositoryInsert).toBeCalled();
             expect(mockProductRepositoryInsert).toBeCalledTimes(1);
