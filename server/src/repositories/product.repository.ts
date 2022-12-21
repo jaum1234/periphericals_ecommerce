@@ -2,7 +2,7 @@ import { Repository as IRepository } from "../interfaces/repository.interface";
 import { Product } from "../models/product.entity";
 import { ProductDTO } from "../dtos/product.dto";
 import { AppDataSource } from "../config/data_sources";
-import { Repository } from "typeorm";
+import { FindOptionsWhere, Repository } from "typeorm";
 
 class ProductRepository implements IRepository<Product>
 {
@@ -17,8 +17,16 @@ class ProductRepository implements IRepository<Product>
         await this.repository.insert(data);
     }
 
-    public fetchAll = async (): Promise<Product[]> => {
-        return;
+    public fetchAll = async (options?: FindOptionsWhere<Product>): Promise<Product[]> => {        
+        if (!options) {
+            return await this.repository.find();
+        }
+        
+        return await this.repository.find({
+            where: {
+                ...options
+            }
+        });
     }
 
     public fetch = async (): Promise<Product> => {
