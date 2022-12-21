@@ -1,6 +1,15 @@
 # Periphericals Ecommerce
 Ecommerce system for selling computer periphericals.
 
+## Use cases
+- Create, read, update and delete products;
+- Create, read, update and delete categories;
+- Sign up, sign in and sign out users;
+- Add, remove and edit cart items;
+- Make payment;
+- Search for products;
+- Filter products by category;
+
 ## Tech Stack 
 
 ### Server
@@ -21,11 +30,4 @@ Ecommerce system for selling computer periphericals.
 - Jest, for testing;
 - Typescript;
 
-## Features
-- Sign up, sign in and sign out;
-- Products CRUD;
-- Categories CRUD;
-- Cart management and manipulation;
-- Payment;
-- Products filtering by category;
-- Products searching by name or description;
+
