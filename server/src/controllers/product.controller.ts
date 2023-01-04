@@ -49,6 +49,18 @@ class ProductController {
 
         return response.status(200).json(product);
     }
+
+    public update = async (request: Request, response: Response, next: NextFunction) => {
+
+        const { body }: { body: Partial<ProductDTO> } = request;
+        const { id } = request.params;
+
+        await ProductRepository.update({
+            id: Number(id)
+        }, body);
+
+        return response.status(200).end();
+    }
 }
 
 export default new ProductController();

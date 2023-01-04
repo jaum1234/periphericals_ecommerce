@@ -43,6 +43,7 @@ class ProductRepository implements IRepository<Product>
         criteria: FindOptionsWhere<Product>, 
         data: Partial<ProductDTO>
     ): Promise<void> => {
+        
         await this.repository.update(criteria, data);
     }
 
