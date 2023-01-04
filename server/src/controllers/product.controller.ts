@@ -45,7 +45,7 @@ class ProductController {
 
         const { id } = request.params;
 
-        const product = ProductRepository.fetch({ id: Number(id) });
+        const product = await ProductRepository.fetch({ id: Number(id) });
 
         return response.status(200).json(product);
     }

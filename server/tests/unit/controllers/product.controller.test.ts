@@ -146,6 +146,7 @@ describe("# ProductController module", () => {
             expect(mockProductRepositoryFetchAll).toBeCalledWith({
                 name: String(mockRequest.query.q)
             });
+            expect(mockProductRepositoryFetchAll).toBeCalledTimes(1);
             
             expect(mockResponseStatus).toBeCalled();
             expect(mockResponseStatus).toBeCalledTimes(1);
@@ -157,5 +158,46 @@ describe("# ProductController module", () => {
 
             expect(mockProduct1.name).toEqual(mockRequest.query.q);
         });
+    });
+
+    describe("## show method", () => {
+        test("### Should return product that match request id param.", async () => {
+            // Arrange
+            const mockRequest: any = new MockRequest();
+            mockRequest.params = {id: 1};
+            const mockResponse: any = new MockResponse();
+            const mockNextFunction: any = jest.fn();
+
+            const mockProduct1: Product = {
+                id: 1,
+                code: "12345",
+                name: "product1",
+                description: "product description",
+                price: 99.99,
+                quantity: 1,
+                image: ""
+            };
+
+            const mockProductRepositoryFetch = jest.spyOn(ProductRepository, "fetch")
+                .mockResolvedValue(mockProduct1);
+
+            const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseJson = jest.spyOn(mockResponse, "json");
+
+            // Act
+            await ProductController.show(mockRequest, mockResponse, mockNextFunction);
+            
+            // Assert
+            expect(mockProductRepositoryFetch).toBeCalled();
+            expect(mockProductRepositoryFetch).toBeCalledWith({
+                id: Number(mockRequest.params.id)
+            });
+            
+            expect(mockResponseStatus).toBeCalled();
+            expect(mockResponseStatus).toBeCalledWith(200);
+            
+            expect(mockResponseJson).toBeCalled();
+            expect(mockResponseJson).toBeCalledWith(mockProduct1);
+        })
     })
 });
