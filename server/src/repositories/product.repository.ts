@@ -39,8 +39,11 @@ class ProductRepository implements IRepository<Product>
         return product;
     }
 
-    public update = async (): Promise<void> => {
-        return
+    public update = async (
+        criteria: FindOptionsWhere<Product>, 
+        data: Partial<ProductDTO>
+    ): Promise<void> => {
+        await this.repository.update(criteria, data);
     }
 
     public remove = async (): Promise<void> => {
