@@ -34,5 +34,6 @@ router.post(
     ProductController.create);
 
 router.get("", ProductController.list);
+router.get("/:id", ProductController.show);
 
 export default router;
