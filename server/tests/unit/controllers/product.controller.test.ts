@@ -199,5 +199,46 @@ describe("# ProductController module", () => {
             expect(mockResponseJson).toBeCalled();
             expect(mockResponseJson).toBeCalledWith(mockProduct1);
         })
-    })
+    });
+
+    describe("## update method", () => {
+        test("### Should update a product successfully", async () => {
+
+            // Arrange
+            const mockBody: Partial<ProductDTO> = {
+                code: "12345",
+                name: "new name",
+                description: "product description",
+                price: 99.99,
+                quantity: 1,
+                image: ""
+            }
+
+            const mockRequest: any = new MockRequest();
+            mockRequest.body = mockBody;
+            mockRequest.params.id = {id: 1}
+
+            const mockResponse: any = new MockResponse();
+            const mockNextFunction: any = jest.fn();
+
+            const mockProductRepositoryUpdate = jest.spyOn(ProductRepository, "update");
+            const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseEnd = jest.spyOn(mockResponse, "end");
+
+            // Act
+            await ProductController.update(mockRequest, mockResponse, mockNextFunction);
+
+            // Assert
+            expect(mockProductRepositoryUpdate).toBeCalled();
+            expect(mockProductRepositoryUpdate).toBeCalledWith({
+                id: Number(mockRequest.params.id)
+            }, mockBody);
+
+            expect(mockResponseStatus).toBeCalled();
+            expect(mockResponseStatus).toBeCalledWith(200);
+
+            expect(mockResponseEnd).toBeCalled();
+            expect(mockResponseEnd).toBeCalled();
+        });
+    });
 });
