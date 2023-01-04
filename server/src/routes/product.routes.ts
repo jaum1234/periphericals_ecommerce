@@ -35,5 +35,6 @@ router.post(
 
 router.get("", ProductController.list);
 router.get("/:id", ProductController.show);
+router.put("/:id", ProductController.update);
 
 export default router;
