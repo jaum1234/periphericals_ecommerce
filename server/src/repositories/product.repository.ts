@@ -30,7 +30,7 @@ class ProductRepository implements IRepository<Product>
     }
 
     public fetch = async (options: FindOptionsWhere<Product>): Promise<Product> => {
-        const product = this.repository.findOne({
+        const product = await this.repository.findOne({
             where: {
                 ...options
             }

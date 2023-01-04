@@ -41,7 +41,14 @@ class ProductController {
         return response.status(200).json(products);
     }
 
+    public show = async (request: Request, response: Response, next: NextFunction) => {
 
+        const { id } = request.params;
+
+        const product = ProductRepository.fetch({ id: Number(id) });
+
+        return response.status(200).json(product);
+    }
 }
 
 export default new ProductController();
