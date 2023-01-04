@@ -23,9 +23,9 @@ class ProductController {
     }
 
     public list = async (request: Request, response: Response, next: NextFunction) => {
-        const { params } = request;
+        const { query } = request;
 
-        const search = params.q;
+        const search = query.q;
 
         let products;
 
@@ -35,7 +35,7 @@ class ProductController {
         }
 
         products = await ProductRepository.fetchAll({
-            name: search
+            name: String(search)
         });
 
         return response.status(200).json(products);

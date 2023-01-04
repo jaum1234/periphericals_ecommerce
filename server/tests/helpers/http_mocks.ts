@@ -1,6 +1,8 @@
 export class MockRequest {
-    public body: object
-    public headers: object
+    public body: object = {}
+    public headers: object = {}
+    public query: object = {}
+    public params: object = {}
 }
 
 export class MockResponse {
