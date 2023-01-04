@@ -29,8 +29,14 @@ class ProductRepository implements IRepository<Product>
         });
     }
 
-    public fetch = async (): Promise<Product> => {
-        return;
+    public fetch = async (options: FindOptionsWhere<Product>): Promise<Product> => {
+        const product = this.repository.findOne({
+            where: {
+                ...options
+            }
+        });
+
+        return product;
     }
 
     public update = async (): Promise<void> => {
