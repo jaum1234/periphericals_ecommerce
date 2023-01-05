@@ -90,7 +90,7 @@ describe("# ProductController module", () => {
             expect(mockResponseEnd).not.toBeCalled();
             
 	    expect(mockNextFunction).toBeCalled();
-	    expect(mockNextFunction).toBeCalledWith(new Error(errorMsg);
+	    expect(mockNextFunction).toBeCalledWith(new Error(errorMsg));
         });
 
     });
