@@ -244,4 +244,35 @@ describe("# ProductController module", () => {
             expect(mockResponseEnd).toBeCalled();
         });
     });
+
+    describe("## remove method", () => {
+	test("### Should remove product successfully", async () => {
+            // Arrange
+            const mockRequest: any = new MockRequest();
+            mockRequest.params.id = {id: 1}
+
+            const mockResponse: any = new MockResponse();
+            const mockNextFunction: any = jest.fn();
+
+            const cb = jest.fn(async (criteria: object) => {return});
+
+            const mockProductRepositoryRemove = jest.spyOn(ProductRepository, "remove")
+                .mockImplementation(cb);
+            const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseEnd = jest.spyOn(mockResponse, "end");
+
+            // Act
+            await ProductController.remove(mockRequest, mockResponse, mockNextFunction);
+
+            // Assert
+	    expect(mockProductRepositoryRemove).toBeCalled();
+	    expect(mockProductRepositoryRemove).toBeCalledWith({id: Number(mockRequest.params.id)});
+
+	    expect(mockResponseStatus).toBeCalled();
+	    expect(mockResponseStatus).toBeCalledWith(204);
+
+	    expect(mockResponseEnd).toBeCalled();
+	
+	});	
+    });
 });
