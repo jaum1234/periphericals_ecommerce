@@ -22,6 +22,7 @@ describe("# ProductController module", () => {
     describe("## create method", () => {
         test("### Should create product successfully", async () => {
 
+	    // Arrange
             const mockBody: ProductDTO = {
                 code: "12345",
                 name: "product name",
@@ -41,13 +42,57 @@ describe("# ProductController module", () => {
             const mockResponseStatus = jest.spyOn(mockResponse, "status");
             const mockResponseEnd = jest.spyOn(mockResponse, "end");
 
+	    // Act
             await ProductController.create(mockRequest, mockResponse, mockNextFunction);
 
+	    // Assert
             expect(mockProductRepositoryCreate).toBeCalledWith(mockBody)
             expect(mockResponseStatus).toBeCalledWith(201);
             expect(mockResponseEnd).toBeCalled();
             expect(mockNextFunction).not.toBeCalled();
         });
+
+	test("### Should not register products with the same code.", async () => {
+
+	    // Arrange
+            const mockBody: ProductDTO = {
+                code: "12345",
+                name: "product name",
+                description: "product description",
+                price: 99.99,
+                quantity: 1,
+                image: ""
+            }
+
+            const mockRequest: any = new MockRequest();
+            mockRequest.body = mockBody;
+
+            const mockResponse: any = new MockResponse();
+            const mockNextFunction: any = jest.fn();
+
+	    const errorMsg = "Product already registered."
+
+            const mockProductRepositoryCreate = jest.spyOn(ProductRepository, "create")
+	    	.mockImplementation(() => {
+		    throw new Error(errorMsg);
+		});
+            const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseEnd = jest.spyOn(mockResponse, "end");
+
+	    // Act
+            await ProductController.create(mockRequest, mockResponse, mockNextFunction);
+
+	    // Assert
+            expect(mockProductRepositoryCreate).toBeCalledWith(mockBody);
+	    
+            expect(mockResponseStatus).not.toBeCalled();
+
+            expect(mockResponseEnd).not.toBeCalled();
+            
+	    expect(mockNextFunction).toBeCalled();
+	    expect(mockNextFunction).toBeCalledWith(new Error(errorMsg);
+        });
+
     });
 
     describe("## list method", () => {
