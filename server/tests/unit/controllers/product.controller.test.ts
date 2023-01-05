@@ -236,11 +236,11 @@ describe("# ProductController module", () => {
             expect(mockProductRepositoryUpdate).toBeCalled();
             expect(mockProductRepositoryUpdate).toBeCalledWith({
                 id: Number(mockRequest.params.id)
-	    }, mockBody)
+	    }, mockBody);
+
             expect(mockResponseStatus).toBeCalled();
             expect(mockResponseStatus).toBeCalledWith(200);
 
-            expect(mockResponseEnd).toBeCalled();
             expect(mockResponseEnd).toBeCalled();
         });
     });
