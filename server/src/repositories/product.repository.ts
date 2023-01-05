@@ -47,8 +47,9 @@ class ProductRepository implements IRepository<Product>
         await this.repository.update(criteria, data);
     }
 
-    public remove = async (): Promise<void> => {
-        return;
+    public remove = async (criteria: FindOptionsWhere<Product>): Promise<void> => {
+        await this.repository.delete(criteria);
+
     }
 
     public clear = async (): Promise<void> => {
