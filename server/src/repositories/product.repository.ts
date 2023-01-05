@@ -15,7 +15,7 @@ class ProductRepository implements IRepository<Product>
 
     public create = async (data: ProductDTO): Promise<void> => {
         
-	const product = await this.repository.fetch({code: data.code});
+	const product = await this.fetch({code: data.code});
 
 	if (product) {
 	    throw new Error("Product already registered.");
