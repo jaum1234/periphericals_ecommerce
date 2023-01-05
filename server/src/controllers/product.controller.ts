@@ -61,6 +61,16 @@ class ProductController {
 
         return response.status(200).end();
     }
+
+    public remove = async (request: Request, response: Response, next: NextFunction) => {
+    
+	const { id } = request.params;     
+
+	await ProductRepository.delete({id: Number(id)});
+
+	return response.status(204).end();
+    }
+
 }
 
 export default new ProductController();
