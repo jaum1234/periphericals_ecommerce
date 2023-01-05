@@ -6,6 +6,7 @@ import { AppDataSource } from "../../../src/config/data_sources";
 import ProductRepository from "../../../src/repositories/product.repository";
 import { Product } from "../../../src/models/product.entity";
 
+
 describe("# ProductController module", () => {
 
     beforeEach(async () => {
@@ -220,8 +221,11 @@ describe("# ProductController module", () => {
 
             const mockResponse: any = new MockResponse();
             const mockNextFunction: any = jest.fn();
+	    
+	    const cb = jest.fn(async (criteria: object, data: object) => {return});
 
-            const mockProductRepositoryUpdate = jest.spyOn(ProductRepository, "update");
+            const mockProductRepositoryUpdate = jest.spyOn(ProductRepository, "update")
+	    	.mockImplementation(cb);
             const mockResponseStatus = jest.spyOn(mockResponse, "status");
             const mockResponseEnd = jest.spyOn(mockResponse, "end");
 
@@ -232,8 +236,7 @@ describe("# ProductController module", () => {
             expect(mockProductRepositoryUpdate).toBeCalled();
             expect(mockProductRepositoryUpdate).toBeCalledWith({
                 id: Number(mockRequest.params.id)
-            }, mockBody);
-
+	    }, mockBody)
             expect(mockResponseStatus).toBeCalled();
             expect(mockResponseStatus).toBeCalledWith(200);
 
