@@ -319,5 +319,41 @@ describe("# ProductController module", () => {
 	    expect(mockResponseEnd).toBeCalled();
 	
 	});	
+        test("### Should not remove product if it does not exists.", async () => {
+     
+	    // Arrange
+            const mockRequest: any = new MockRequest();
+            mockRequest.params.id = {id: 1}
+
+            const mockResponse: any = new MockResponse();
+            const mockNextFunction: any = jest.fn();
+
+	    const errorMsg = "Product not found.";
+
+            const cb = jest.fn(async (criteria: object) => {
+		throw new Error(errorMsg);
+	    });
+
+            const mockProductRepositoryRemove = jest.spyOn(ProductRepository, "remove")
+                .mockImplementation(cb);
+            const mockResponseStatus = jest.spyOn(mockResponse, "status");
+            const mockResponseEnd = jest.spyOn(mockResponse, "end");
+
+            // Act
+            await ProductController.remove(mockRequest, mockResponse, mockNextFunction);
+
+            // Assert
+            expect(mockProductRepositoryRemove).toBeCalled();
+            expect(mockProductRepositoryRemove).toBeCalledWith({id: Number(mockRequest.params.id)});
+
+	    expect(mockNextFunction).toBeCalled();
+	    expect(mockNextFunction).toBeCalledWith(new Error(errorMsg));
+
+            expect(mockResponseStatus).not.toBeCalled();
+
+            expect(mockResponseEnd).not.toBeCalled();
+
+        });
+
     });
 });
