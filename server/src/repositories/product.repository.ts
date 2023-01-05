@@ -55,8 +55,14 @@ class ProductRepository implements IRepository<Product>
     }
 
     public remove = async (criteria: FindOptionsWhere<Product>): Promise<void> => {
-        await this.repository.delete(criteria);
 
+	const product = await this.fetch(criteria);
+
+	if (!product) {
+	    throw new Error("Product not found.");
+	}
+	 
+        await this.repository.delete(criteria);
     }
 
     public clear = async (): Promise<void> => {
