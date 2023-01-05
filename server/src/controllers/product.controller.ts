@@ -66,7 +66,13 @@ class ProductController {
     
 	const { id } = request.params;     
 
-	await ProductRepository.remove({id: Number(id)});
+	try {
+	    await ProductRepository.remove({id: Number(id)});
+	} catch (err: any) {
+	    next(err);
+	    return;
+	}
+
 
 	return response.status(204).end();
     }
